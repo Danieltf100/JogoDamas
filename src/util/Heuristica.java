@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import model.Casa;
 import model.Jogada;
 import model.Peca;
 import model.TabuleiroFoto;
@@ -98,28 +97,20 @@ public class Heuristica {
 					if (Peca.isKing(tf.foto[x][y])) {
 						int tempX = x;
 						int tempY = y;
+						//  diagonal principal para cima
 						while(tempX >= 0 && tempY < TabuleiroFoto.SIZE) {
-							if (tempX-2 >= 0 && tempY-2 >= 0) {
-								if (tf.foto[tempX-2][tempY-2] == VAZIO && Peca.isOtherSide(side, tf.foto[tempX-1][tempY-1])) {
-									casosPossiveis = keepAndAdd(casosPossiveis, tf, x, y, tempX-2, tempY-2, tempX-1, tempY-1, side);
-								}
-							}
-							if (tempX+2 <= 9 && tempY-2 >= 0) {
-								if (tf.foto[tempX+2][tempY-2] == VAZIO && Peca.isOtherSide(side, tf.foto[tempX+1][tempY-1])) {
-									casosPossiveis = keepAndAdd(casosPossiveis, tf, x, y, tempX+2, tempY-2, tempX+1, tempY-1, side);
+							if (tempX-2 >= 0 && tempY+2 < TabuleiroFoto.SIZE) {
+								if (tf.foto[tempX-2][tempY+2] == VAZIO && Peca.isOtherSide(side, tf.foto[tempX-1][tempY+1])) {
+									casosPossiveis = keepAndAdd(casosPossiveis, tf, x, y, tempX-2, tempY+2, tempX-1, tempY+1, side);
 								}
 							}
 							tempX--; tempY++;
 						}
 						tempX = x;
 						tempY = y;
+						// diagonal principal para baixo
 						while(tempX < TabuleiroFoto.SIZE && tempY >= 0) {
-							if (tempX-2 >= 0 && tempY-2 >= 0) {
-								if (tf.foto[tempX-2][tempY-2] == VAZIO && Peca.isOtherSide(side, tf.foto[tempX-1][tempY-1])) {
-									casosPossiveis = keepAndAdd(casosPossiveis, tf, x, y, tempX-2, tempY-2, tempX-1, tempY-1, side);
-								}
-							}
-							if (tempX+2 <= 9 && tempY-2 >= 0) {
+							if (tempX+2 < TabuleiroFoto.SIZE && tempY-2 >= 0) {
 								if (tf.foto[tempX+2][tempY-2] == VAZIO && Peca.isOtherSide(side, tf.foto[tempX+1][tempY-1])) {
 									casosPossiveis = keepAndAdd(casosPossiveis, tf, x, y, tempX+2, tempY-2, tempX+1, tempY-1, side);
 								}
@@ -128,30 +119,22 @@ public class Heuristica {
 						}
 						tempX = x;
 						tempY = y;
+						// diagonal secundaria para cima
 						while(tempX < TabuleiroFoto.SIZE && tempY < TabuleiroFoto.SIZE) {
-							if (tempX-2 >= 0 && tempY-2 >= 0) {
-								if (tf.foto[tempX-2][tempY-2] == VAZIO && Peca.isOtherSide(side, tf.foto[tempX-1][tempY-1])) {
-									casosPossiveis = keepAndAdd(casosPossiveis, tf, x, y, tempX-2, tempY-2, tempX-1, tempY-1, side);
-								}
-							}
-							if (tempX+2 <= 9 && tempY-2 >= 0) {
-								if (tf.foto[tempX+2][tempY-2] == VAZIO && Peca.isOtherSide(side, tf.foto[tempX+1][tempY-1])) {
-									casosPossiveis = keepAndAdd(casosPossiveis, tf, x, y, tempX+2, tempY-2, tempX+1, tempY-1, side);
+							if (tempX+2 < TabuleiroFoto.SIZE && tempY+2 < TabuleiroFoto.SIZE) {
+								if (tf.foto[tempX+2][tempY+2] == VAZIO && Peca.isOtherSide(side, tf.foto[tempX+1][tempY+1])) {
+									casosPossiveis = keepAndAdd(casosPossiveis, tf, x, y, tempX+2, tempY+2, tempX+1, tempY+1, side);
 								}
 							}
 							tempX++; tempY++;
 						}
 						tempX = x;
 						tempY = y;
+						// diagonal secundaria para baixo
 						while(tempX >= 0 && tempY >= 0) {
 							if (tempX-2 >= 0 && tempY-2 >= 0) {
 								if (tf.foto[tempX-2][tempY-2] == VAZIO && Peca.isOtherSide(side, tf.foto[tempX-1][tempY-1])) {
 									casosPossiveis = keepAndAdd(casosPossiveis, tf, x, y, tempX-2, tempY-2, tempX-1, tempY-1, side);
-								}
-							}
-							if (tempX+2 <= 9 && tempY-2 >= 0) {
-								if (tf.foto[tempX+2][tempY-2] == VAZIO && Peca.isOtherSide(side, tf.foto[tempX+1][tempY-1])) {
-									casosPossiveis = keepAndAdd(casosPossiveis, tf, x, y, tempX+2, tempY-2, tempX+1, tempY-1, side);
 								}
 							}
 							tempX--; tempY--;
@@ -174,9 +157,8 @@ public class Heuristica {
 		char peca = auxTf.foto[xOriginal][yOriginal];
 		auxTf.foto[xOriginal][yOriginal] = VAZIO;
 		auxTf.foto[xFinal][yFinal] = peca;
-		casosPossiveis.add(new Cenario(auxTf));		
-		Jogada jogada = new Jogada(xOriginal, yOriginal, xFinal, yFinal);		
-		casosPossiveis.get(casosPossiveis.size()-1).setJogada(jogada);
+		casosPossiveis.add(new Cenario(auxTf));
+		casosPossiveis.get(casosPossiveis.size()-1).setJogada(new Jogada(xOriginal, yOriginal, xFinal, yFinal));
 		if (yFinal == 9) {
 			casosPossiveis.get(casosPossiveis.size()-1).setViceKing(true);
 		}
@@ -194,8 +176,7 @@ public class Heuristica {
 		auxTf.foto[xEnemy][yEnemy] = VAZIO;
 		auxTf.foto[xFinal][yFinal] = peca;
 		casosPossiveis.add(new Cenario(auxTf));
-		Jogada jogada = new Jogada(xOriginal, yOriginal, xFinal, yFinal);
-		casosPossiveis.get(casosPossiveis.size()-1).setJogada(jogada);
+		casosPossiveis.get(casosPossiveis.size()-1).setJogada(new Jogada(xOriginal, yOriginal, xFinal, yFinal));
 		if (yFinal == 9) {
 			casosPossiveis.get(casosPossiveis.size()-1).setViceKing(true);
 		}
