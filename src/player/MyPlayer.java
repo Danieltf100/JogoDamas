@@ -1,11 +1,12 @@
 package player;
 
+import heuristica.Heuristica;
+
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import util.Cenario;
-import util.Heuristica;
 import factory.FactoryPlayer;
 import model.Casa;
 import model.Jogada;
@@ -29,7 +30,7 @@ public class MyPlayer extends Player {
 			e.printStackTrace();
 		}
 		return new Jogada(0, 0, 0, 0);
-	}	
+	}
 	
 	public static void main(String[] args) {
 		TabuleiroFoto tf = new TabuleiroFoto();
@@ -37,7 +38,6 @@ public class MyPlayer extends Player {
 		System.out.println("criando jogador 1");
 		Player p1 = FactoryPlayer.getPlayer('R', tf);
 		System.out.println("criando jogador 2");
-		//Player p2 = FactoryPlayer.getPlayer('R', tf);
 		Player p2 = new MyPlayer(tf);
 		System.out.println("criando jogo");
 		Jogo jogo = new Jogo(p1,p2);
