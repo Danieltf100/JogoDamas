@@ -207,8 +207,9 @@ public class Heuristica {
 		long r = 0L;
 		
 		if (cenario.getTf().getCount(side) >= original.getCount(side)) points++;
-		if (cenario.getTf().getCount(Peca.otherSide(side)) < original.getCount(Peca.otherSide(side))) points+=2;
-		if (cenario.isViceKing()) points+=2;
+		if (cenario.getTf().getCount(Peca.otherSide(side)) < original.getCount(Peca.otherSide(side))) points+=5;
+		if (cenario.isViceKing()) points+=3;
+		if (cenario.getTf().getCount(Peca.otherSide(side)) == 0) points+=10;
 		
 		r = (long) Math.pow(points, 10);
 		
